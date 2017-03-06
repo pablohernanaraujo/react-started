@@ -1,0 +1,116 @@
+header
+	width: 100%
+	height: 64px
+	background-color: $principal
+
+.contenedor-header-titulo
+	float: left
+
+	.header-titulo
+		height: 64px
+		margin-left: 20px
+		line-height: 64px
+		font-size: 24px
+		font-weight: 400
+		float: left
+
+	.menu-icono
+		float: left
+		color: $blanco
+		padding: 5px
+		margin: 16px 0 0 16px
+		border-radius: 50%
+		cursor: pointer
+
+.contenedor-navegador
+	float: right
+
+.boton-navegador
+	color: $blanco
+	padding: 0 20px
+	height: 64px
+	line-height: 64px
+	float: left
+	text-decoration: none
+	margin-left: 1px
+	transition: background-color .5s ease
+	position: relative
+	overflow: hidden
+
+	&:hover
+		background-color: rgba(0,0,0,0.2)
+
+.boton-navegador-active
+	background-color: rgba(0,0,0,0.2)
+	pointer-events: none
+
+.menu
+	position: absolute
+	top: 0
+	right: 0
+	bottom: 0
+	left: 0
+	background-color: rgba(0,0,0,0.5)
+	z-index: 100
+	opacity: 0
+	transition: opacity .5s ease-in
+
+.menu-fondo
+	width: 100%
+	height: 100%
+	position: absolute
+
+.menu-animacion
+	opacity: 1
+
+.menu-lateral
+	width: 200px
+	height: 100%
+	background-color: $principal
+	position: absolute
+	left: -200px
+	transition: left .6s ease
+	z-index: 110
+
+.boton-menu
+	color: $blanco
+	height: 64px
+	line-height: 64px
+	text-decoration: none
+	text-align: center
+	display: block
+
+.boton-menu-active
+	background-color: rgba(0,0,0,0.2)
+	pointer-events: none
+
+.ripple-contenedor
+	position: absolute
+	top: 0
+	left: 0
+	width: 100%
+	height: 100%
+	overflow: hidden
+	background: transparent
+
+.ripple-efecto
+	position: absolute
+	transform: translate(-50%, -50%)
+	opacity: 0
+	width: 0
+	height: 0
+	border-radius: 50%
+	background: rgba(255,255,255, 0.4)
+
+.ripple-contenedor.ripple-efecto-animacion .ripple-efecto
+	animation: ripple .4s ease-in
+
+@keyframes ripple
+  0%
+    opacity: 0
+  30%
+    opacity: 1
+  100%
+    opacity: 0
+    padding-bottom: 200%
+    width: 200%
