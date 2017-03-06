@@ -9,6 +9,18 @@ export default class HomePage extends React.Component {
             <i className='fa fa-check' />
             <div className='check-subtitulo'>Webpack</div>
           </div>
+          <div className='check-contenedor'>
+            <i className='fa fa-check' />
+            <div className='check-subtitulo'>Sass y font awesome</div>
+          </div>
+          <div className='check-contenedor'>
+            <i className='fa fa-check' />
+            <div className='check-subtitulo'>React router</div>
+          </div>
+          <div className='check-contenedor'>
+            <i className='fa fa-check' />
+            <div className='check-subtitulo'>Redux, React redux, Redux thunk, Jquery y Firebase</div>
+          </div>
         </div>
       </div>
     )
