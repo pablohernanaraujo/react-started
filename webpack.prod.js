@@ -10,7 +10,7 @@ const extractSass = new ExtractTextPlugin({
 
 module.exports = {
 	entry: {
-		app: resolve(__dirname, 'src/index.js'),
+		bundle: resolve(__dirname, 'src/index.js'),
 		vendor: ['react','react-dom']
 	},
 	output: {
