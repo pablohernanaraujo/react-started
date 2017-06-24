@@ -1,41 +1,74 @@
-const { resolve } = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
+
+var plugins = [
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor'
+  }),
+  new HtmlWebpackPlugin({
+    template: 'public/index.html'
+  }),
+  new ExtractTextPlugin("[name].css")
+]
 
 module.exports = {
-	entry: resolve(__dirname, 'src/index.js'),
+	devtool: 'source-map',
+  entry: {
+    vendor: './src/vendors.js',
+    main: './src/index.js'
+  },
 	output: {
-		filename: 'bundle.js'
-	},
+    path: __dirname + '/dist',
+    filename: '[name].bundle.js',
+    sourceMapFilename: '[name].map'
+  },
 	devServer: {
     contentBase: "./public",
   },
 	module: {
-		rules: [{
+		loaders: [{
 			enforce: 'pre',
 			test: /\.js$/,
 			exclude: /node_module/,
 			loader: 'standard-loader'
-		}, {
+		},
+		{
+			test: /\.sss$/,
+			loader: ExtractTextPlugin.extract({
+				use: [{
+					loader: "css-loader",
+          options: {
+            url: false
+          }
+				}, {
+					loader: "postcss-loader",
+          options: {
+            plugins: function(){
+              return [
+                require('postcss-smart-import'),
+                require('postcss-cssnext')
+              ]
+            },
+            parser: 'sugarss'
+          }
+				}],
+				fallback: "style-loader"
+			})
+		},
+		{
 			test: /\js$/,
 			exclude: /node_module/,
 			loader: 'babel-loader',
 			query: {
         presets: ['es2015','stage-0','react']
       }
-		}, {
-			test: /\.sass$/,
-      use: [{
-        loader: "style-loader"
-      }, {
-        loader: "css-loader"
-      }, {
-        loader: "sass-loader"
-      }]
-    }]
+		}]
 	},
-	plugins: [
-		new HtmlWebpackPlugin({
-			template: './public/index.html'
-		})
-	]
+	plugins: plugins,
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  }
 }

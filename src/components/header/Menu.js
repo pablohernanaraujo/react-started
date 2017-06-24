@@ -1,15 +1,8 @@
 import React from 'react'
-import $ from 'jquery'
 
 import BotonMenu from './BotonMenu'
 
 class Menu extends React.Component {
-  componentDidMount () {
-    setTimeout(() => {
-      $('#menu').css({'opacity': 1})
-      $('#menu-lateral').css({'left': 0})
-    }, 10)
-  }
   render () {
     return (
       <div id='menu' className='menu'>

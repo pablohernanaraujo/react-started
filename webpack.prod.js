@@ -1,52 +1,79 @@
 const webpack = require('webpack')
-const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
 
-const extractSass = new ExtractTextPlugin({
-  filename: "[name].[contenthash:6].css",
-  disable: process.env.NODE_ENV === "development"
-});
+var plugins = [
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor'
+  }),
+  new HtmlWebpackPlugin({
+    template: 'public/index.html'
+  }),
+  new ExtractTextPlugin("[name].css"),
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {warnings: false},
+    output: {comments: false},
+    sourceMap: true
+  })
+]
 
 module.exports = {
-	entry: {
-		bundle: resolve(__dirname, 'src/index.js'),
-		vendor: ['react','react-dom']
-	},
+	devtool: 'source-map',
+  entry: {
+    vendor: './src/vendors.js',
+    main: './src/index.js'
+  },
 	output: {
-		path: resolve(__dirname, 'dist'),
-		filename: '[name].[chunkhash:6].js'
-	},
+    path: __dirname + '/dist',
+    filename: '[name].bundle.js',
+    sourceMapFilename: '[name].map'
+  },
+	devServer: {
+    contentBase: "./public",
+  },
 	module: {
-		rules: [{
+		loaders: [{
+			enforce: 'pre',
+			test: /\.js$/,
+			exclude: /node_module/,
+			loader: 'standard-loader'
+		},
+		{
+			test: /\.sss$/,
+			loader: ExtractTextPlugin.extract({
+				use: [{
+					loader: 'css-loader',
+          options: {
+            url: false
+          }
+				}, {
+					loader: 'postcss-loader',
+          options: {
+            plugins: function(){
+              return [
+                require('postcss-smart-import'),
+                require('postcss-cssnext')
+              ]
+            },
+            parser: 'sugarss'
+          }
+				}],
+				fallback: 'style-loader'
+			})
+		},
+		{
 			test: /\js$/,
 			exclude: /node_module/,
 			loader: 'babel-loader',
 			query: {
         presets: ['es2015','stage-0','react']
       }
-		}, {
-			test: /\.sass$/,
-			loader: extractSass.extract({
-        use: [{
-          loader: "css-loader"
-        }, {
-          loader: "sass-loader"
-        }],
-        fallback: "style-loader"
-      })
-    }]
+		}]
 	},
-	performance: {
-		hints: 'error'
-	},
-	plugins: [
-    new HtmlWebpackPlugin({
-			template: './public/index.html'
-		}),
-		new webpack.optimize.CommonsChunkPlugin({
-			name: 'vendor'
-		}),
-		extractSass
-	]
+	plugins: plugins,
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  }
 }

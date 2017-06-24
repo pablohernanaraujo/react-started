@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Router, useRouterHistory } from 'react-router'
 import { createHashHistory } from 'history'
 import { Provider } from 'react-redux'
-import './sass/styles.sass'
+import './postcss/styles.sss'
 
 import routes from './routes'
 import configureStore from './store/configureStore'

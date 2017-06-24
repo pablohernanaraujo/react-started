@@ -1,6 +1,5 @@
 import React from 'react'
 import { WindowResizeListener } from 'react-window-resize-listener'
-import $ from 'jquery'
 
 import BotonNavegador from './BotonNavegador'
 import Menu from './Menu'
@@ -24,11 +23,7 @@ export default class Header extends React.Component {
   }
 
   handleClose () {
-    $('#menu').css({'opacity': 0})
-    $('#menu-lateral').css({'left': '-200px'})
-    setTimeout(() => {
-      this.setState({open: false})
-    }, 500)
+    this.setState({open: false})
   }
 
   render () {
